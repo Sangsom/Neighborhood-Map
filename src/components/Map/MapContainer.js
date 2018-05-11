@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import styled from "styled-components";
+
+const MapDiv = styled.div`
+  width: 90vw;
+  height: 75vh;
+`;
 
 class MapContainer extends Component {
   state = {
@@ -24,10 +30,15 @@ class MapContainer extends Component {
         name: "Bronx Supreme Court",
         location: { lat: 40.8262388, lng: -73.9235238 }
       }
-    ]
+    ],
+    mapType: "roadmap"
   };
 
   componentDidMount() {
+    this.loadMap();
+  }
+
+  componentDidUpdate() {
     this.loadMap();
   }
 
@@ -35,6 +46,8 @@ class MapContainer extends Component {
     if (this.props && this.props.google) {
       const { google } = this.props;
       const maps = google.maps;
+
+      const { mapType } = this.state;
 
       const mapRef = this.refs.map; // looks for HTML div ref 'map'. Returned in render below
       const node = ReactDOM.findDOMNode(mapRef); // finds the 'map' div in the React DOM, names it node
@@ -44,7 +57,7 @@ class MapContainer extends Component {
         {
           center: { lat: 40.7485722, lng: -74.0068633 },
           zoom: 11,
-          mapTypeId: "roadmap"
+          mapTypeId: mapType
         }
       );
 
@@ -55,23 +68,22 @@ class MapContainer extends Component {
       this.state.locations.forEach(location => {
         const marker = new google.maps.Marker({
           position: { lat: location.location.lat, lng: location.location.lng },
-          map: this.map,
-          title: location.name
+          title: location.name,
+          draggagle: true,
+          animation: google.maps.Animation.DROP
         });
+
+        // Add markers to map
+        marker.setMap(this.map);
       });
     }
   };
 
   render() {
-    const style = {
-      width: "90vw",
-      height: "75vh"
-    };
-
     return (
-      <div ref="map" style={style}>
-        loading map...
-      </div>
+      <React.Fragment>
+        <MapDiv ref="map">loading map...</MapDiv>
+      </React.Fragment>
     );
   }
 }
