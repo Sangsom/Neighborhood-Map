@@ -1,14 +1,24 @@
 import React, { Component } from "react";
 import { GoogleApiWrapper } from "google-maps-react";
 import MapContainer from "./MapContainer";
+import styled from "styled-components";
+
+const AppWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 300px 1fr;
+`;
+const LeftSide = styled.div`
+  background: red;
+  height: 100vh;
+`;
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <h1>Google Maps API + React</h1>
+      <AppWrapper>
+        <LeftSide />
         <MapContainer google={this.props.google} />
-      </div>
+      </AppWrapper>
     );
   }
 }
