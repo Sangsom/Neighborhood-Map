@@ -8,10 +8,6 @@ const MapDiv = styled.div`
   height: 75vh;
 `;
 
-/**
- * TODO:: Change map colors and what map is showing
- */
-
 class MapContainer extends Component {
   state = {
     defaultMapZoom: 16,
@@ -20,7 +16,8 @@ class MapContainer extends Component {
       lng: 24.108286
     },
     locations: beerPlaces,
-    mapType: "roadmap"
+    mapType: "roadmap",
+    iconSize: 30
   };
 
   componentDidMount() {
@@ -65,24 +62,37 @@ class MapContainer extends Component {
    */
   addMarkers = () => {
     const { google } = this.props;
+    const { locations, iconSize } = this.state;
 
-    const beer_icon = {
+    // Create an Marker Icon
+    const beerIcon = {
       url: "./img/beer_icon.png",
-      size: new google.maps.Size(71, 71),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(25, 25)
+      size: new google.maps.Size(iconSize, iconSize),
+      scaledSize: new google.maps.Size(iconSize, iconSize)
     };
 
-    this.state.locations.forEach(location => {
+    const infoWindow = new google.maps.InfoWindow({
+      content: "Hello there"
+    });
+
+    // Generate icons for every location
+    locations.forEach(location => {
       const marker = new google.maps.Marker({
         position: { lat: location.location.lat, lng: location.location.lng },
         title: location.name,
         draggagle: true,
         animation: google.maps.Animation.DROP,
-        icon: beer_icon
+        icon: beerIcon,
+        clickable: true,
+        anchorPoint: new google.maps.Point(0, -30)
       });
 
+      // Add click listener to open InfoWindow
+      marker.addListener("click", e => {
+        infoWindow.open(this.map, marker);
+      });
+
+      // Add markers to Map
       marker.setMap(this.map);
     });
   };
