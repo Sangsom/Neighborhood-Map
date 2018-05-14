@@ -8,6 +8,10 @@ const MapDiv = styled.div`
   height: 75vh;
 `;
 
+/**
+ * TODO:: Change map colors and what map is showing
+ */
+
 class MapContainer extends Component {
   state = {
     defaultMapZoom: 16,
@@ -27,6 +31,9 @@ class MapContainer extends Component {
     this.loadMap();
   }
 
+  /**
+   * Loads a google map
+   */
   loadMap = () => {
     if (this.props && this.props.google) {
       const { google } = this.props;
@@ -59,12 +66,21 @@ class MapContainer extends Component {
   addMarkers = () => {
     const { google } = this.props;
 
+    const beer_icon = {
+      url: "./img/beer_icon.png",
+      size: new google.maps.Size(71, 71),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(25, 25)
+    };
+
     this.state.locations.forEach(location => {
       const marker = new google.maps.Marker({
         position: { lat: location.location.lat, lng: location.location.lng },
         title: location.name,
         draggagle: true,
-        animation: google.maps.Animation.DROP
+        animation: google.maps.Animation.DROP,
+        icon: beer_icon
       });
 
       marker.setMap(this.map);
