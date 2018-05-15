@@ -5,8 +5,8 @@ import { beerPlaces } from "../../lib/constants";
 import axios from "axios";
 
 const MapDiv = styled.div`
-  width: 90vw;
-  height: 75vh;
+  width: 100%;
+  height: 90vh;
 `;
 
 class MapContainer extends Component {
