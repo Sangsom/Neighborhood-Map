@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { beerPlaces } from "../../lib/constants";
+import axios from "axios";
 
 const MapDiv = styled.div`
   width: 90vw;
@@ -25,7 +26,7 @@ class MapContainer extends Component {
   }
 
   componentDidUpdate() {
-    this.loadMap();
+    //  this.loadMap();
   }
 
   /**
@@ -89,6 +90,37 @@ class MapContainer extends Component {
 
       // Add click listener to open InfoWindow
       marker.addListener("click", e => {
+        const clientId = "KT0D2EBKSOLKTDTT3J5NQ233PFQ4L5D34PCJ2YQMTRF1OYRZ";
+        const clientSecret = "HUT1FS45J0ALJUGAE0B4XAZJURT0BFNNB3USSVHSDUIOYOUY";
+
+        axios
+          .get("https://api.foursquare.com/v2/venues/search", {
+            params: {
+              client_id: clientId,
+              client_secret: clientSecret,
+              ll: "56.951604,24.109677",
+              v: "20180323",
+              query: "Beer Garden On Central Park",
+              limit: 1
+            }
+          })
+          .then(res => {
+            return res.data;
+          })
+          .then(data => {
+            console.log(data);
+          })
+          .catch(err => {
+            console.log("Error", err);
+          });
+
+        /**
+         * TODO: Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource
+         */
+
+        // Center map to marker position
+        this.map.setCenter(marker.getPosition());
+
         infoWindow.open(this.map, marker);
       });
 
