@@ -24,15 +24,11 @@ class MapContainer extends Component {
     },
     mapType: "roadmap",
     iconSize: 30,
-    infoWindow: ""
+    markers: []
   };
 
   componentDidMount() {
     this.loadMap();
-  }
-
-  componentDidUpdate() {
-    //  this.loadMap();
   }
 
   /**
@@ -70,6 +66,9 @@ class MapContainer extends Component {
   addMarkers = () => {
     const { google } = this.props;
     const { iconSize, locations } = this.state;
+    const markers = [];
+
+    const infoWindow = new google.maps.InfoWindow();
 
     // Create an Marker Icon
     const beerIcon = {
@@ -78,27 +77,46 @@ class MapContainer extends Component {
       scaledSize: new google.maps.Size(iconSize, iconSize)
     };
 
-    // Generate icons for every location
-    locations.forEach(location => {
+    // Initialize markers
+    locations.forEach((location, index) => {
       const marker = new google.maps.Marker({
+        map: this.map,
         position: { lat: location.location.lat, lng: location.location.lng },
         title: location.name,
-        draggagle: true,
         animation: google.maps.Animation.DROP,
+        id: index,
         icon: beerIcon,
-        clickable: true,
         anchorPoint: new google.maps.Point(0, -30)
       });
 
-      // Add click listener to open InfoWindow
-      marker.addListener("click", e => {
-        // Center map to marker position
-        this.map.panTo(marker.getPosition());
-      });
+      // Push the markers to array of markers
+      markers.push(marker);
 
-      // Add markers to Map
-      marker.setMap(this.map);
+      marker.addListener("click", () => {
+        this.openInfoWindow(marker, infoWindow);
+      });
     });
+
+    // Set up the markers state
+    this.setState({ markers });
+  };
+
+  openInfoWindow = (marker, infoWindow) => {
+    const { map } = this;
+    // Check if the infoWindow is not already opened for this marker
+    if (infoWindow.marker != marker) {
+      infoWindow.marker = marker;
+      infoWindow.setContent(`<div>${marker.title}</div>`);
+      infoWindow.open(this.map, marker);
+
+      // Clear the marker property when closed
+      infoWindow.addListener("closeclick", () => {
+        infoWindow.setMarker = null;
+      });
+    }
+
+    // Center map to a marker position
+    map.panTo(marker.getPosition());
   };
 
   render() {

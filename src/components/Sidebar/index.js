@@ -5,6 +5,7 @@ const Wrapper = styled.aside``;
 
 class Sidebar extends Component {
   render() {
+    console.log("Props", this.props);
     const { locations } = this.props;
 
     return (
