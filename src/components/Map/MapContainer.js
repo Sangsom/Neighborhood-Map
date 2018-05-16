@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { beerPlaces } from "../../lib/constants";
 import axios from "axios";
 
 const MapDiv = styled.div`
@@ -16,9 +15,9 @@ class MapContainer extends Component {
       lat: 56.949649,
       lng: 24.108286
     },
-    locations: beerPlaces,
     mapType: "roadmap",
-    iconSize: 30
+    iconSize: 30,
+    infoWindow: ""
   };
 
   componentDidMount() {
@@ -36,6 +35,14 @@ class MapContainer extends Component {
     if (this.props && this.props.google) {
       const { google } = this.props;
       const maps = google.maps;
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: "Hello there"
+      });
+
+      this.setState({
+        infoWindow: infoWindow
+      });
 
       const { defaultMapZoom, center, mapType } = this.state;
 
@@ -59,11 +66,26 @@ class MapContainer extends Component {
   };
 
   /**
+   * Open Info Window
+   */
+  openInfoWindow = marker => {
+    const { google } = this.props;
+    const { infoWindow } = this.state;
+    console.log("Marker", marker);
+    // Close info window
+    infoWindow.close();
+    // Open info window
+    infoWindow.open(this.map, marker);
+    // Center map to marker position
+    this.map.panTo(marker.getPosition());
+  };
+
+  /**
    * Adds markers to a map from State
    */
   addMarkers = () => {
-    const { google } = this.props;
-    const { locations, iconSize } = this.state;
+    const { google, locations } = this.props;
+    const { iconSize } = this.state;
 
     // Create an Marker Icon
     const beerIcon = {
@@ -71,10 +93,6 @@ class MapContainer extends Component {
       size: new google.maps.Size(iconSize, iconSize),
       scaledSize: new google.maps.Size(iconSize, iconSize)
     };
-
-    const infoWindow = new google.maps.InfoWindow({
-      content: "Hello there"
-    });
 
     // Generate icons for every location
     locations.forEach(location => {
@@ -90,42 +108,35 @@ class MapContainer extends Component {
 
       // Add click listener to open InfoWindow
       marker.addListener("click", e => {
-        const clientId = "KT0D2EBKSOLKTDTT3J5NQ233PFQ4L5D34PCJ2YQMTRF1OYRZ";
-        const clientSecret = "HUT1FS45J0ALJUGAE0B4XAZJURT0BFNNB3USSVHSDUIOYOUY";
-
-        axios
-          .get("https://api.foursquare.com/v2/venues/search", {
-            params: {
-              client_id: clientId,
-              client_secret: clientSecret,
-              ll: "56.951604,24.109677",
-              v: "20180323",
-              query: "Beer Garden On Central Park",
-              limit: 1
-            }
-          })
-          .then(res => {
-            return res.data;
-          })
-          .then(data => {
-            console.log(data);
-          })
-          .catch(err => {
-            console.log("Error", err);
-          });
-
-        /**
-         * TODO: Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource
-         */
-
-        // Center map to marker position
-        this.map.panTo(marker.getPosition());
-
-        infoWindow.open(this.map, marker);
+        this.openInfoWindow(marker);
       });
 
       // Add markers to Map
       marker.setMap(this.map);
+
+      const clientId = "KT0D2EBKSOLKTDTT3J5NQ233PFQ4L5D34PCJ2YQMTRF1OYRZ";
+      const clientSecret = "HUT1FS45J0ALJUGAE0B4XAZJURT0BFNNB3USSVHSDUIOYOUY";
+
+      // axios
+      //   .get("https://api.foursquare.com/v2/venues/search", {
+      //     params: {
+      //       client_id: clientId,
+      //       client_secret: clientSecret,
+      //       ll: "56.951604,24.109677",
+      //       v: "20180323",
+      //       query: "Beer Garden On Central Park",
+      //       limit: 1
+      //     }
+      //   })
+      //   .then(res => {
+      //     return res.data;
+      //   })
+      //   .then(data => {
+      //     console.log(data);
+      //   })
+      //   .catch(err => {
+      //     console.log("Error", err);
+      //   });
     });
   };
 
