@@ -11,6 +11,8 @@ class Sidebar extends Component {
     return (
       <Wrapper>
         <h2>Sidebar</h2>
+        <button onClick={this.props.showMarkers}>Show</button>
+        <button onClick={this.props.hideMarkers}>Hide</button>
         <ul>
           {locations.map((location, index) => (
             <li key={index}>{location.name}</li>

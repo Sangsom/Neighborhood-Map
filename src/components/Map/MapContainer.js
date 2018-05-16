@@ -24,6 +24,7 @@ class MapContainer extends Component {
     },
     mapType: "roadmap",
     iconSize: 30,
+    mapTypeControl: false,
     markers: []
   };
 
@@ -104,7 +105,7 @@ class MapContainer extends Component {
   openInfoWindow = (marker, infoWindow) => {
     const { map } = this;
     // Check if the infoWindow is not already opened for this marker
-    if (infoWindow.marker != marker) {
+    if (infoWindow.marker !== marker) {
       infoWindow.marker = marker;
       infoWindow.setContent(`<div>${marker.title}</div>`);
       infoWindow.open(this.map, marker);
@@ -119,12 +120,32 @@ class MapContainer extends Component {
     map.panTo(marker.getPosition());
   };
 
+  hideMarkers = () => {
+    const { markers } = this.state;
+
+    markers.forEach(marker => {
+      marker.setMap(null);
+    });
+  };
+
+  showMarkers = () => {
+    const { markers } = this.state;
+
+    markers.forEach(marker => {
+      marker.setMap(this.map);
+    });
+  };
+
   render() {
     const { locations } = this.state;
 
     return (
       <Wrapper>
-        <Sidebar locations={locations} />
+        <Sidebar
+          locations={locations}
+          showMarkers={this.showMarkers}
+          hideMarkers={this.hideMarkers}
+        />
         <MapDiv ref="map">loading map...</MapDiv>
       </Wrapper>
     );
