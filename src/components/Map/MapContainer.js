@@ -119,7 +119,7 @@ class MapContainer extends Component {
          */
 
         // Center map to marker position
-        this.map.setCenter(marker.getPosition());
+        this.map.panTo(marker.getPosition());
 
         infoWindow.open(this.map, marker);
       });
