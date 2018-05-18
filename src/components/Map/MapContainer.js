@@ -29,7 +29,11 @@ class MapContainer extends Component {
     markers: [],
     infoWindow: "",
     markerDetails: {
-      venueId: null
+      venueId: null,
+      name: null,
+      address: null,
+      url: null,
+      img: null
     }
   };
 
@@ -61,6 +65,7 @@ class MapContainer extends Component {
 
       // Create info window
       const infoWindow = new google.maps.InfoWindow();
+      infoWindow.setOptions({ maxWidth: 300 });
       this.setState({ infoWindow: infoWindow });
 
       // creates a new Google map on the specified configuration set above
@@ -137,8 +142,9 @@ class MapContainer extends Component {
   getMarkerDetails = marker => {
     const clientId = "KT0D2EBKSOLKTDTT3J5NQ233PFQ4L5D34PCJ2YQMTRF1OYRZ";
     const clientSecret = "HUT1FS45J0ALJUGAE0B4XAZJURT0BFNNB3USSVHSDUIOYOUY";
-    const { infoWindow } = this.state;
+    const { infoWindow, markerDetails } = this.state;
 
+    // Venues Search
     axios
       .get("https://api.foursquare.com/v2/venues/search", {
         params: {
@@ -151,26 +157,34 @@ class MapContainer extends Component {
         }
       })
       .then(res => {
-        this.setState({
-          markerDetails: {
-            venueId: res.data.response.venues[0].id
-          }
-        });
+        if (res.status === 200 && res.data.response.venues.length > 0) {
+          this.setState(prevState => ({
+            markerDetails: {
+              ...prevState.markerDetails,
+              venueId: res.data.response.venues[0].id
+            }
+          }));
+        } else {
+          throw new Error();
+        }
+
         return res.data;
       })
       .then(data => {
         const venue = data.response.venues[0];
 
-        let content = `
-          <h4>${venue.name}</h4>
-          <b>Address:</b> ${venue.location.formattedAddress}
-        `;
+        this.setState(prevState => ({
+          markerDetails: {
+            ...prevState.markerDetails,
+            name: venue.name,
+            address: venue.location.formattedAddress
+          }
+        }));
 
+        // Venue Details
         axios
           .get(
-            `https://api.foursquare.com/v2/venues/${
-              this.state.markerDetails.venueId
-            }`,
+            `https://api.foursquare.com/v2/venues/${markerDetails.venueId}`,
             {
               params: {
                 client_id: clientId,
@@ -180,12 +194,70 @@ class MapContainer extends Component {
             }
           )
           .then(res => {
-            this.setState({ url: res.data.response.venue.shortUrl });
+            this.setState(prevState => ({
+              markerDetails: {
+                ...prevState.markerDetails,
+                url: res.data.response.venue.url
+              }
+            }));
             return res;
           })
           .catch(err => {
             console.log("Error", err);
           });
+
+        // Venue Photos
+        axios
+          .get(
+            `https://api.foursquare.com/v2/venues/${
+              markerDetails.venueId
+            }/photos`,
+            {
+              params: {
+                client_id: clientId,
+                client_secret: clientSecret,
+                v: "20180323"
+              }
+            }
+          )
+          .then(res => {
+            const { photos } = res.data.response;
+
+            if (photos.count > 0) {
+              console.log("Photos", photos);
+              const link = `${photos.items[0].prefix}300x300${
+                photos.items[0].suffix
+              }`;
+              this.setState(prevState => ({
+                markerDetails: {
+                  ...prevState.markerDetails,
+                  img: link
+                }
+              }));
+            }
+          });
+
+        // Create marker content
+        const content = `
+          <h4>${markerDetails.name}</h4>
+          <address>Address: ${markerDetails.address.map(val => {
+            return " " + val;
+          })}</address>
+          ${
+            markerDetails.url !== null && markerDetails.url !== undefined
+              ? `Website: <a href=${markerDetails.url} target="_blank">${
+                  markerDetails.url
+                }</a>`
+              : ""
+          }
+        </a>
+        ${
+          markerDetails.img !== null && markerDetails.img !== undefined
+            ? ` <p><img src=${markerDetails.img} /></p>`
+            : ""
+        }
+       
+        `;
 
         infoWindow.setContent(content);
       })
