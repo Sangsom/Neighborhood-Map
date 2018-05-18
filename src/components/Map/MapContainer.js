@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { beerPlaces } from "../../lib/constants";
+import axios from "axios";
 import Sidebar from "../Sidebar";
 
 const Wrapper = styled.div`
@@ -11,7 +12,7 @@ const Wrapper = styled.div`
 
 const MapDiv = styled.div`
   width: 100%;
-  height: 90vh;
+  height: 100vh;
 `;
 
 class MapContainer extends Component {
@@ -26,7 +27,10 @@ class MapContainer extends Component {
     iconSize: 30,
     mapTypeControl: false,
     markers: [],
-    infoWindow: ""
+    infoWindow: "",
+    markerDetails: {
+      venueId: null
+    }
   };
 
   componentDidMount() {
@@ -105,14 +109,17 @@ class MapContainer extends Component {
     this.setState({ markers });
   };
 
+  /**
+   * Opens info window for the marker
+   * @param {object} marker - Marker object
+   */
   openInfoWindow = marker => {
-    console.log("Marker", marker);
     const { map } = this;
     const { infoWindow } = this.state;
     // Check if the infoWindow is not already opened for this marker
     if (infoWindow.marker !== marker) {
       infoWindow.marker = marker;
-      infoWindow.setContent(`<div>${marker.title}</div>`);
+      infoWindow.setContent(`Loading...`);
       infoWindow.open(this.map, marker);
 
       // Clear the marker property when closed
@@ -121,8 +128,70 @@ class MapContainer extends Component {
       });
     }
 
+    this.getMarkerDetails(marker);
+
     // Center map to a marker position
     map.panTo(marker.getPosition());
+  };
+
+  getMarkerDetails = marker => {
+    const clientId = "KT0D2EBKSOLKTDTT3J5NQ233PFQ4L5D34PCJ2YQMTRF1OYRZ";
+    const clientSecret = "HUT1FS45J0ALJUGAE0B4XAZJURT0BFNNB3USSVHSDUIOYOUY";
+    const { infoWindow } = this.state;
+
+    axios
+      .get("https://api.foursquare.com/v2/venues/search", {
+        params: {
+          client_id: clientId,
+          client_secret: clientSecret,
+          ll: `${marker.getPosition().lat()},${marker.getPosition().lng()}`,
+          v: "20180323",
+          query: marker.title,
+          limit: 1
+        }
+      })
+      .then(res => {
+        this.setState({
+          markerDetails: {
+            venueId: res.data.response.venues[0].id
+          }
+        });
+        return res.data;
+      })
+      .then(data => {
+        const venue = data.response.venues[0];
+
+        let content = `
+          <h4>${venue.name}</h4>
+          <b>Address:</b> ${venue.location.formattedAddress}
+        `;
+
+        axios
+          .get(
+            `https://api.foursquare.com/v2/venues/${
+              this.state.markerDetails.venueId
+            }`,
+            {
+              params: {
+                client_id: clientId,
+                client_secret: clientSecret,
+                v: "20180323"
+              }
+            }
+          )
+          .then(res => {
+            this.setState({ url: res.data.response.venue.shortUrl });
+            return res;
+          })
+          .catch(err => {
+            console.log("Error", err);
+          });
+
+        infoWindow.setContent(content);
+      })
+      .catch(err => {
+        console.log("Error", err);
+      });
   };
 
   closeInfoWindow = () => {
@@ -166,26 +235,3 @@ class MapContainer extends Component {
 }
 
 export default MapContainer;
-
-// const clientId = "KT0D2EBKSOLKTDTT3J5NQ233PFQ4L5D34PCJ2YQMTRF1OYRZ";
-// const clientSecret = "HUT1FS45J0ALJUGAE0B4XAZJURT0BFNNB3USSVHSDUIOYOUY";
-// axios
-//   .get("https://api.foursquare.com/v2/venues/search", {
-//     params: {
-//       client_id: clientId,
-//       client_secret: clientSecret,
-//       ll: "56.951604,24.109677",
-//       v: "20180323",
-//       query: "Beer Garden On Central Park",
-//       limit: 1
-//     }
-//   })
-//   .then(res => {
-//     return res.data;
-//   })
-//   .then(data => {
-//     console.log(data);
-//   })
-//   .catch(err => {
-//     console.log("Error", err);
-//   });
