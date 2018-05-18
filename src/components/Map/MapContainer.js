@@ -125,6 +125,10 @@ class MapContainer extends Component {
     map.panTo(marker.getPosition());
   };
 
+  closeInfoWindow = () => {
+    this.state.infoWindow.close();
+  };
+
   hideMarkers = () => {
     const { markers } = this.state;
 
@@ -142,15 +146,18 @@ class MapContainer extends Component {
   };
 
   render() {
-    const { markers } = this.state;
+    const { markers, locations } = this.state;
 
     return (
       <Wrapper>
         <Sidebar
+          locations={locations}
           markers={markers}
           showMarkers={this.showMarkers}
           hideMarkers={this.hideMarkers}
           openInfoWindow={this.openInfoWindow}
+          closeInfoWindow={this.closeInfoWindow}
+          searchLocations={this.searchLocations}
         />
         <MapDiv ref="map">loading map...</MapDiv>
       </Wrapper>

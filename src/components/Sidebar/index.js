@@ -22,6 +22,30 @@ const ListItem = styled.li`
 `;
 
 class Sidebar extends Component {
+  state = {
+    locations: []
+  };
+
+  searchLocations = e => {
+    const { value } = e.target;
+    const { markers } = this.props;
+
+    this.props.closeInfoWindow();
+
+    const filteredLocations = markers.filter(location => {
+      // Regular expression to match the value if it contains in str
+      // gi = global and case insensitive
+      const strToMatch = new RegExp(value, "gi");
+      if (location.title.match(strToMatch)) {
+        location.setVisible(true);
+      } else {
+        location.setVisible(false);
+      }
+
+      return location.title.match(strToMatch);
+    });
+  };
+
   render() {
     const { markers, openInfoWindow } = this.props;
 
@@ -30,7 +54,11 @@ class Sidebar extends Component {
         <h2>Sidebar</h2>
         <button onClick={this.props.showMarkers}>Show</button>
         <button onClick={this.props.hideMarkers}>Hide</button>
-        <input type="text" placeholder="Search" />
+        <input
+          type="text"
+          placeholder="Search"
+          onChange={this.searchLocations}
+        />
         <List>
           {markers.map((marker, index) => (
             <ListItem key={index} onClick={() => openInfoWindow(marker)}>
