@@ -25,7 +25,8 @@ class MapContainer extends Component {
     mapType: "roadmap",
     iconSize: 30,
     mapTypeControl: false,
-    markers: []
+    markers: [],
+    infoWindow: ""
   };
 
   componentDidMount() {
@@ -54,6 +55,10 @@ class MapContainer extends Component {
         }
       );
 
+      // Create info window
+      const infoWindow = new google.maps.InfoWindow();
+      this.setState({ infoWindow: infoWindow });
+
       // creates a new Google map on the specified configuration set above
       this.map = new maps.Map(node, mapConfig);
 
@@ -68,8 +73,6 @@ class MapContainer extends Component {
     const { google } = this.props;
     const { iconSize, locations } = this.state;
     const markers = [];
-
-    const infoWindow = new google.maps.InfoWindow();
 
     // Create an Marker Icon
     const beerIcon = {
@@ -94,7 +97,7 @@ class MapContainer extends Component {
       markers.push(marker);
 
       marker.addListener("click", () => {
-        this.openInfoWindow(marker, infoWindow);
+        this.openInfoWindow(marker);
       });
     });
 
@@ -102,8 +105,10 @@ class MapContainer extends Component {
     this.setState({ markers });
   };
 
-  openInfoWindow = (marker, infoWindow) => {
+  openInfoWindow = marker => {
+    console.log("Marker", marker);
     const { map } = this;
+    const { infoWindow } = this.state;
     // Check if the infoWindow is not already opened for this marker
     if (infoWindow.marker !== marker) {
       infoWindow.marker = marker;
@@ -137,14 +142,15 @@ class MapContainer extends Component {
   };
 
   render() {
-    const { locations } = this.state;
+    const { markers } = this.state;
 
     return (
       <Wrapper>
         <Sidebar
-          locations={locations}
+          markers={markers}
           showMarkers={this.showMarkers}
           hideMarkers={this.hideMarkers}
+          openInfoWindow={this.openInfoWindow}
         />
         <MapDiv ref="map">loading map...</MapDiv>
       </Wrapper>

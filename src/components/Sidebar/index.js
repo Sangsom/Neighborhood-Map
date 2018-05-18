@@ -5,8 +5,7 @@ const Wrapper = styled.aside``;
 
 class Sidebar extends Component {
   render() {
-    console.log("Props", this.props);
-    const { locations } = this.props;
+    const { markers, openInfoWindow } = this.props;
 
     return (
       <Wrapper>
@@ -14,8 +13,10 @@ class Sidebar extends Component {
         <button onClick={this.props.showMarkers}>Show</button>
         <button onClick={this.props.hideMarkers}>Hide</button>
         <ul>
-          {locations.map((location, index) => (
-            <li key={index}>{location.name}</li>
+          {markers.map((marker, index) => (
+            <li key={index} onClick={() => openInfoWindow(marker)}>
+              {marker.title}
+            </li>
           ))}
         </ul>
       </Wrapper>
