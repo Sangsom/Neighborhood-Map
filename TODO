@@ -3,13 +3,11 @@ Map:
   ✔ Load a map @done(18-05-14 11:22)
   ✔ Change default markers to beer icon @done(18-05-14 11:25)
   ✔ Add Info Window to a markers @done(18-05-15 16:49)
-  ☐ Show in info window information about specific place
-  ☐ In a sidebar show list with all the markers on map
-  ☐ Search functionality in the list
+  ✔ Show in info window information about specific place @done(18-05-18 12:34)
+  ✔ In a sidebar show list with all the markers on map @done(18-05-18 12:34)
+  ✔ Search functionality in the list @done(18-05-18 12:34)
 
 
 Info Window:
   ☐ How to get placeId
   ☐ Get Place Details
-
-

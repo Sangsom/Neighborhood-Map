@@ -5,11 +5,13 @@ const Wrapper = styled.aside`
   height: 100vh;
   overflow-y: scroll;
 `;
+
 const List = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
 `;
+
 const ListItem = styled.li`
   padding: 20px 15px;
   background: #ccc;
@@ -26,11 +28,19 @@ class Sidebar extends Component {
     locations: []
   };
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ locations: nextProps.markers });
+  }
+
+  /**
+   * Performs a search on map markers
+   */
   searchLocations = e => {
     const { value } = e.target;
-    const { markers } = this.props;
+    const { markers, closeInfoWindow } = this.props;
 
-    this.props.closeInfoWindow();
+    // Close info window before starting to search
+    closeInfoWindow();
 
     const filteredLocations = markers.filter(location => {
       // Regular expression to match the value if it contains in str
@@ -44,10 +54,14 @@ class Sidebar extends Component {
 
       return location.title.match(strToMatch);
     });
+
+    // Update locations state with filtered locations
+    this.setState({ locations: filteredLocations });
   };
 
   render() {
-    const { markers, openInfoWindow } = this.props;
+    const { openInfoWindow } = this.props;
+    const { locations } = this.state;
 
     return (
       <Wrapper>
@@ -60,7 +74,7 @@ class Sidebar extends Component {
           onChange={this.searchLocations}
         />
         <List>
-          {markers.map((marker, index) => (
+          {locations.map((marker, index) => (
             <ListItem key={index} onClick={() => openInfoWindow(marker)}>
               {marker.title}
             </ListItem>
