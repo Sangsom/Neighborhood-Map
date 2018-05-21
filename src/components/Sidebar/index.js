@@ -5,6 +5,7 @@ const Wrapper = styled.aside`
   height: 100vh;
   overflow-y: scroll;
   background: #e9fadd;
+  padding: 10px;
 `;
 
 const Button = styled.button`
@@ -14,10 +15,13 @@ const Button = styled.button`
   background: transparent;
   border: 1px solid #3f5468;
   margin-bottom: 10px;
+  border-radius: 8px;
+  transition: all 0.5s;
 
   &:hover {
     cursor: pointer;
     background: #b8e4c9;
+    color: #3f5468;
   }
 `;
 
@@ -40,11 +44,14 @@ const List = styled.ul`
 const ListItem = styled.li`
   padding: 20px 15px;
   background: #b8e4c9;
-  border-bottom: 1px solid #3f5468;
+  border-bottom: 2px solid #3f5468;
+  border-radius: 3px;
+  transition: all 0.5s;
 
   &:hover {
     background: #e9fadd;
     cursor: pointer;
+    color: #3f5468;
   }
 `;
 
