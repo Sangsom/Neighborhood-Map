@@ -224,14 +224,13 @@ class MapContainer extends Component {
             ? `<a href="tel:${phone.phone}">${phone.formattedPhone}</a>`
             : "";
         const urlField =
-          url !== undefined
-            ? `<a href="${url}" target="_blank">${url}</a>`
-            : "";
+          url !== undefined ? `<a href=${url} target="_blank">${url}</a>` : "";
         const ratingField =
           rating !== undefined
             ? `<span><b>${rating}</b></span>`
             : "not available";
-        const imgField = img !== undefined ? `<img src="${img}" />` : "";
+        const imgField =
+          img !== undefined ? `<img src=${img} alt=${name} />` : "";
 
         const content = `
           <div style="width: 100%;">
