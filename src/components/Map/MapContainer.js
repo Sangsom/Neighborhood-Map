@@ -7,7 +7,7 @@ import Sidebar from "../Sidebar";
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 350px 1fr;
   font-family: "Roboto", sans-serif;
   color: #42291c;
 
@@ -156,8 +156,8 @@ class MapContainer extends Component {
    * @param {object} marker - Marker object
    */
   getMarkerDetails = marker => {
-    const clientId = "KT0D2EBKSOLKTDTT3J5NQ233PFQ4L5D34PCJ2YQMTRF1OYRZ";
-    const clientSecret = "HUT1FS45J0ALJUGAE0B4XAZJURT0BFNNB3USSVHSDUIOYOUY";
+    const clientId = "ZWIQ2CGPMVFJ5IGJLNOC1JCNR0FWLK32ENCSW21504K1HCTF";
+    const clientSecret = "EHDLJW5RB2YZORXLGH23VC1VMC25RSZNVRDNTLCI3J4XI2AW";
     const { infoWindow } = this.state;
 
     // Venues Search
@@ -240,6 +240,7 @@ class MapContainer extends Component {
             <p>${urlField}</p>
             <p>Rating: ${ratingField}</p>
             <div style='width: 100%; text-align: center'>${imgField}</div>
+            <img style="width: 100%" src="./img/byFoursquare.png" />
           </div>
         `;
 

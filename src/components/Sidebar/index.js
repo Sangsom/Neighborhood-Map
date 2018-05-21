@@ -60,6 +60,7 @@ class Sidebar extends Component {
     return (
       <Wrapper>
         <h2 tabIndex="1">Old Town Beer Map</h2>
+
         <Button
           onClick={this.props.showMarkers}
           aria-label="Show all markers"
