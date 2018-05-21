@@ -6,6 +6,10 @@ const Wrapper = styled.aside`
   overflow-y: scroll;
   background: #e9fadd;
   padding: 10px;
+
+  @media (max-width: 700px) {
+    height: 400px;
+  }
 `;
 
 const Button = styled.button`
@@ -45,6 +49,7 @@ const ListItem = styled.li`
   padding: 20px 15px;
   background: #b8e4c9;
   border-bottom: 2px solid #3f5468;
+  border-right: 1px solid #3f5468;
   border-radius: 3px;
   transition: all 0.5s;
 
@@ -99,7 +104,7 @@ class Sidebar extends Component {
 
     return (
       <Wrapper>
-        <h2>Sidebar</h2>
+        <h2>Old Town Beer Map</h2>
         <Button onClick={this.props.showMarkers}>Show</Button>
         <Button onClick={this.props.hideMarkers}>Hide</Button>
         <Search

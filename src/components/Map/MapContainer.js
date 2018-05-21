@@ -10,6 +10,10 @@ const Wrapper = styled.div`
   grid-template-columns: 300px 1fr;
   font-family: "Roboto", sans-serif;
   color: #42291c;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const MapDiv = styled.div`
