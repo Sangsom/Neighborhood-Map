@@ -8,14 +8,14 @@ import Sidebar from "../Sidebar";
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 300px 1fr;
+  font-family: "Roboto", sans-serif;
+  color: #42291c;
 `;
 
 const MapDiv = styled.div`
   width: 100%;
   height: 100vh;
 `;
-
-const StyledInfoWindow = styled.div``;
 
 class MapContainer extends Component {
   state = {
@@ -153,7 +153,7 @@ class MapContainer extends Component {
   getMarkerDetails = marker => {
     const clientId = "KT0D2EBKSOLKTDTT3J5NQ233PFQ4L5D34PCJ2YQMTRF1OYRZ";
     const clientSecret = "HUT1FS45J0ALJUGAE0B4XAZJURT0BFNNB3USSVHSDUIOYOUY";
-    const { infoWindow, markerDetails } = this.state;
+    const { infoWindow } = this.state;
 
     // Venues Search
     axios
@@ -274,6 +274,10 @@ class MapContainer extends Component {
     markers.forEach(marker => {
       marker.setMap(this.map);
     });
+  };
+
+  updateMarkers = markers => {
+    this.setState({ markers });
   };
 
   render() {

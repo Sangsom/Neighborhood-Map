@@ -4,6 +4,31 @@ import styled from "styled-components";
 const Wrapper = styled.aside`
   height: 100vh;
   overflow-y: scroll;
+  background: #e9fadd;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  font-size: 16px;
+  padding: 10px 15px;
+  background: transparent;
+  border: 1px solid #3f5468;
+  margin-bottom: 10px;
+
+  &:hover {
+    cursor: pointer;
+    background: #b8e4c9;
+  }
+`;
+
+const Search = styled.input`
+  width: 100%;
+  font-size: 16px;
+  padding: 10px 15px;
+  background: transparent;
+  border: none;
+  margin-bottom: 15px;
+  border-bottom: 3px solid #3f5468;
 `;
 
 const List = styled.ul`
@@ -14,11 +39,11 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   padding: 20px 15px;
-  background: #ccc;
-  border-bottom: 1px solid black;
+  background: #b8e4c9;
+  border-bottom: 1px solid #3f5468;
 
   &:hover {
-    background: #ddd;
+    background: #e9fadd;
     cursor: pointer;
   }
 `;
@@ -29,7 +54,9 @@ class Sidebar extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ locations: nextProps.markers });
+    if (nextProps.markers !== this.props.markers) {
+      this.setState({ locations: nextProps.markers });
+    }
   }
 
   /**
@@ -66,9 +93,9 @@ class Sidebar extends Component {
     return (
       <Wrapper>
         <h2>Sidebar</h2>
-        <button onClick={this.props.showMarkers}>Show</button>
-        <button onClick={this.props.hideMarkers}>Hide</button>
-        <input
+        <Button onClick={this.props.showMarkers}>Show</Button>
+        <Button onClick={this.props.hideMarkers}>Hide</Button>
+        <Search
           type="text"
           placeholder="Search"
           onChange={this.searchLocations}
