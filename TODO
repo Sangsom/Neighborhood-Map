@@ -6,11 +6,9 @@ Map:
   ✔ Show in info window information about specific place @done(18-05-18 12:34)
   ✔ In a sidebar show list with all the markers on map @done(18-05-18 12:34)
   ✔ Search functionality in the list @done(18-05-18 12:34)
-  ☐ Styling Sidebar
+  ✔ Styling Sidebar @done(18-05-21 14:10)
 
 
 Info Window:
   ✔ How to get placeId @done(18-05-21 11:34)
   ✔ Get Place Details @done(18-05-21 11:34)
-
-  Create a object state with all required information it will show

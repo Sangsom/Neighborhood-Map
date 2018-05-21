@@ -59,17 +59,36 @@ class Sidebar extends Component {
 
     return (
       <Wrapper>
-        <h2>Old Town Beer Map</h2>
-        <Button onClick={this.props.showMarkers}>Show</Button>
-        <Button onClick={this.props.hideMarkers}>Hide</Button>
+        <h2 tabIndex="1">Old Town Beer Map</h2>
+        <Button
+          onClick={this.props.showMarkers}
+          aria-label="Show all markers"
+          tabIndex="1"
+        >
+          Show
+        </Button>
+        <Button
+          onClick={this.props.hideMarkers}
+          aria-label="Hide all markers"
+          tabIndex="1"
+        >
+          Hide
+        </Button>
         <Search
           type="text"
           placeholder="Search"
           onChange={this.searchLocations}
+          aria-label="Search places"
+          tabIndex="1"
         />
-        <List>
+        <List role="list" aria-label="Beer places" tabIndex="1">
           {locations.map((marker, index) => (
-            <ListItem key={index} onClick={() => openInfoWindow(marker)}>
+            <ListItem
+              tabIndex="1"
+              role="listitem"
+              key={index}
+              onClick={() => openInfoWindow(marker)}
+            >
               {marker.title}
             </ListItem>
           ))}

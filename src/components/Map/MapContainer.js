@@ -299,7 +299,9 @@ class MapContainer extends Component {
           closeInfoWindow={this.closeInfoWindow}
           searchLocations={this.searchLocations}
         />
-        <MapDiv ref="map">loading map...</MapDiv>
+        <MapDiv role="application" ref="map">
+          loading map...
+        </MapDiv>
       </Wrapper>
     );
   }
