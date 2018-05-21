@@ -2,6 +2,10 @@
 
 This project is built specifically for Front-End Developer Nanodegree at Udacity by using React framework. This app shows a map of finest pubs/bars in Old Town of Riga where you can enjoy beer. Users can see the list of pubs/bars and by clicking on POI there will be shown more details about the place.
 
+## Live View
+
+App can be seen on [GitHub Pages](https://sangsom.github.io/Neighborhood-Map/).
+
 ## Used APIs
 
 * [Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial) - Google Maps API which allows to use and style Google Maps.
