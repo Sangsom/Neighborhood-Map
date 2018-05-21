@@ -8,14 +8,15 @@ export const List = styled.ul`
 
 export const ListItem = styled.li`
   padding: 20px 15px;
-  background: #b8e4c9;
-  border-bottom: 2px solid #3f5468;
-  border-right: 1px solid #3f5468;
+  color: #1c1c33;
+  background: #ffcd4c;
+  border-bottom: 2px solid #1c1c33;
+  border-right: 1px solid #1c1c33;
   border-radius: 3px;
   transition: all 0.5s;
 
   &:hover {
-    background: #e9fadd;
+    background: #ffae2d;
     cursor: pointer;
     color: #3f5468;
   }

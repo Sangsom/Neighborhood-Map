@@ -7,7 +7,7 @@ import { List, ListItem } from "./List";
 const Wrapper = styled.aside`
   height: 100vh;
   overflow-y: scroll;
-  background: #e9fadd;
+  background: #f7f4f3;
   padding: 10px;
 
   @media (max-width: 700px) {
