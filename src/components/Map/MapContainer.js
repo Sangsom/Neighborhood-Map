@@ -15,6 +15,8 @@ const MapDiv = styled.div`
   height: 100vh;
 `;
 
+const StyledInfoWindow = styled.div``;
+
 class MapContainer extends Component {
   state = {
     locations: beerPlaces,
@@ -68,7 +70,7 @@ class MapContainer extends Component {
       );
 
       // Create info window
-      const infoWindow = new google.maps.InfoWindow();
+      const infoWindow = new google.maps.InfoWindow({ maxWidth: 200 });
       //infoWindow.setOptions({ maxWidth: 300 });
       this.setState({ infoWindow: infoWindow });
 
@@ -227,12 +229,14 @@ class MapContainer extends Component {
         const imgField = img !== undefined ? `<img src="${img}" />` : "";
 
         const content = `
-          <h2>${name}</h2>
-          <p>${address}</p>
-          <p>${phoneField}</p>
-          <p>${urlField}</p>
-          <p>Rating: ${ratingField}</p>
-          <div style='width: 100%; text-align: center'>${imgField}</div>
+          <div style="width: 100%;">
+            <h2>${name}</h2>
+            <p>${address}</p>
+            <p>${phoneField}</p>
+            <p>${urlField}</p>
+            <p>Rating: ${ratingField}</p>
+            <div style='width: 100%; text-align: center'>${imgField}</div>
+          </div>
         `;
 
         // Set the infoWindow content
