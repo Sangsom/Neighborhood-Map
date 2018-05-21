@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { Button } from "./Button";
+import { Search } from "./Search";
+import { List, ListItem } from "./List";
 
 const Wrapper = styled.aside`
   height: 100vh;
@@ -9,54 +12,6 @@ const Wrapper = styled.aside`
 
   @media (max-width: 700px) {
     height: 400px;
-  }
-`;
-
-const Button = styled.button`
-  width: 100%;
-  font-size: 16px;
-  padding: 10px 15px;
-  background: transparent;
-  border: 1px solid #3f5468;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  transition: all 0.5s;
-
-  &:hover {
-    cursor: pointer;
-    background: #b8e4c9;
-    color: #3f5468;
-  }
-`;
-
-const Search = styled.input`
-  width: 100%;
-  font-size: 16px;
-  padding: 10px 15px;
-  background: transparent;
-  border: none;
-  margin-bottom: 15px;
-  border-bottom: 3px solid #3f5468;
-`;
-
-const List = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-`;
-
-const ListItem = styled.li`
-  padding: 20px 15px;
-  background: #b8e4c9;
-  border-bottom: 2px solid #3f5468;
-  border-right: 1px solid #3f5468;
-  border-radius: 3px;
-  transition: all 0.5s;
-
-  &:hover {
-    background: #e9fadd;
-    cursor: pointer;
-    color: #3f5468;
   }
 `;
 

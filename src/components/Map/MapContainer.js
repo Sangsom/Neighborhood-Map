@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { beerPlaces } from "../../lib/constants";
+import { beerPlaces, mapStyles } from "../../lib/constants";
 import axios from "axios";
 import Sidebar from "../Sidebar";
 
@@ -69,7 +69,8 @@ class MapContainer extends Component {
         {
           center: center,
           zoom: defaultMapZoom,
-          mapTypeId: mapType
+          mapTypeId: mapType,
+          styles: mapStyles
         }
       );
 
